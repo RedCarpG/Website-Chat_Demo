@@ -30,8 +30,12 @@ input {
   border-color: none;
   border-width: 0;
 }
+h1 {
+  color: white;
+}
 
 button {
+  user-select: none;
   font-family: "Fredoka", sans-serif;
   cursor: pointer;
   display: flex;
@@ -42,6 +46,7 @@ button {
   padding: 1em;
   border-style: none;
   border-width: 0;
+  width: fit-content;
   background-color: rgb(67, 192, 150);
 }
 
