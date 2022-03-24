@@ -1,0 +1,234 @@
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@300;500&display=swap");
+
+.chat_demo {
+  font-family: "Fredoka", sans-serif;
+  width: 70vw;
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(30, 30, 30);
+  border-radius: 25px;
+}
+
+.avatar {
+  border-radius: 50%;
+  width: auto;
+  height: inherit;
+  align-items: center;
+  justify-content: center;
+  & > svg {
+    width: inherit;
+    height: inherit;
+  }
+}
+.name {
+  font-weight: 500;
+}
+
+.chat_window {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  justify-content: space-between;
+  align-items: center;
+  width: 70%;
+  min-width: 400px;
+  height: 100%;
+  min-height: 700px;
+  color: white;
+  padding: 25px;
+  padding-right: 15px;
+  padding-top: 25px;
+
+  .chat_room {
+    width: 100%;
+    height: calc(100% - 3em - 15px);
+    padding: 1em;
+    background-color: rgb(59, 59, 59);
+    border-radius: 25px;
+    .chat_content {
+      scroll-behavior: smooth;
+      overflow-y: auto;
+      scroll-snap-type: y;
+      padding-right: 1em;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8em;
+      height: 100%;
+    }
+
+    .chat_box_profile {
+      width: 60px;
+      height: 60px;
+      border-radius: 50px;
+    }
+    .chat_box_name {
+      font-size: 12px;
+    }
+    .chat_box_content {
+      width: fit-content;
+      padding: 0.5em;
+      padding-left: 1em;
+      padding-right: 1em;
+      margin-top: 0.5em;
+      background-color: rgb(121, 121, 121);
+      border-radius: 20px;
+    }
+    .chat_box,
+    .user_chat_box {
+      display: flex;
+      gap: 0.1em;
+    }
+
+    .user_chat_box {
+      justify-content: flex-end;
+      & > div {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+      }
+      .chat_box_content {
+        background-color: rgb(67, 192, 150);
+      }
+
+      .chat_box_name {
+        text-align: right;
+      }
+    }
+  }
+
+  .chat_input {
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+    align-items: center;
+    width: 100%;
+    height: 3em;
+    border-radius: 15px;
+
+    .chat_input_text {
+      width: calc(100% - 50px);
+      height: 70%;
+    }
+    .chat_input_send {
+      font-size: 1rem;
+    }
+  }
+}
+
+.profile_window {
+  width: 30%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 25px;
+  padding-left: 5px;
+  & > div {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 1em;
+
+    background-color: rgb(110, 110, 110);
+    border-radius: 25px;
+    color: black;
+  }
+  .profile_content {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+    width: 100%;
+    color: white;
+    .profile_pic {
+      width: 90%;
+      position: relative;
+      .profile_pic_shuffle {
+        position: absolute;
+        padding: 0.5em;
+        font-size: 1rem;
+        right: 15%;
+        bottom: 5%;
+      }
+    }
+    .profile_name {
+      background-color: rgb(31, 31, 31);
+      border-radius: 25px;
+      padding: 0.5em;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 1em;
+      width: 80%;
+      height: 3em;
+
+      input,
+      div {
+        display: block;
+        width: 70%;
+        height: auto;
+        font-size: auto;
+        text-align: center;
+        padding: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 0.5em;
+      }
+
+      button {
+        background: none;
+        padding: 0;
+        width: auto;
+        height: auto;
+        font-size: 1.25em;
+        color: white;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.footer {
+  position: absolute;
+  width: 100%;
+  bottom: 3vh;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: rgb(153, 153, 153);
+  padding-top: 2rem;
+  gap: 0.25em;
+  .links {
+    display: flex;
+    gap: 1em;
+  }
+}
+
+button.send {
+  width: 2.5em;
+  height: 2.5em;
+  padding: 0;
+  background-color: rgb(90, 136, 221);
+}
+
+button.update {
+  margin-top: 2em;
+  background-color: rgb(90, 136, 221);
+}
+
+button.sign_out {
+  background-color: rgb(221, 90, 90);
+}
