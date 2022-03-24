@@ -1,5 +1,5 @@
 import styles from "../styles/Home.module.scss";
-import React, { FormEventHandler, useRef, useState } from "react";
+import React, { FormEventHandler, useEffect, useRef, useState } from "react";
 import { MdOutlineSend } from "react-icons/md";
 
 import {
@@ -13,8 +13,9 @@ import Avatar from "../components/Avatar";
 
 interface ChatBoxProps {
   message: messageType;
+  style: any;
 }
-const ChatBox: React.FC<ChatBoxProps> = ({ message }) => {
+const ChatBox: React.FC<ChatBoxProps> = ({ message, style }) => {
   const { text, uid } = message;
   const isUser = isCurrentUser(uid);
 
@@ -22,6 +23,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ message }) => {
   return (
     <div
       className={`message ${isUser ? styles.user_chat_box : styles.chat_box}`}
+      style={style}
     >
       {isUser ? (
         <>
@@ -50,34 +52,62 @@ const ChatBox: React.FC<ChatBoxProps> = ({ message }) => {
   );
 };
 
-const ChatWindow: React.FC = () => {
-  const [messages] = useGetMessages(25);
-  messages?.reverse();
-  const [inputText, setInputText] = useState("");
-
+const ChatRoom: React.FC = () => {
+  const [messages, loading, error, snapshot] = useGetMessages(25);
   const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  let content = <></>;
+  if (loading) {
+    content = <p>Loading...</p>;
+  } else if (error) {
+    content = <p>Error: {error.message}</p>;
+  } else if (messages) {
+    content = (
+      <>
+        {messages.map((msg, index) => (
+          <ChatBox
+            style={{ order: 24 - index }}
+            key={index}
+            message={msg as messageType}
+          />
+        ))}
+      </>
+    );
+  }
+
+  return (
+    <>
+      <div className={styles.chat_room}>
+        <div className={styles.chat_content}>
+          {content}
+          <div style={{ order: 25 }} ref={bottomRef}></div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+const ChatWindow: React.FC = () => {
+  const [inputText, setInputText] = useState("");
 
   const sendMessage: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    storeMessage(inputText);
+    await storeMessage(inputText);
     setInputText("");
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <>
       <div className={styles.chat_window}>
-        <div className={styles.chat_room}>
-          <div className={styles.chat_content}>
-            {messages &&
-              messages.map((msg, index) => (
-                <ChatBox key={index} message={msg as messageType} />
-              ))}
-            <div ref={bottomRef}></div>
-          </div>
-        </div>
+        <ChatRoom />
         <form className={styles.chat_input} onSubmit={sendMessage}>
           <input
+            placeholder="Say something here"
+            type="text"
             className={styles.chat_input_text}
             value={inputText}
             onChange={(e) => {

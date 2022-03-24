@@ -3,12 +3,18 @@
 .chat_demo {
   font-family: "Fredoka", sans-serif;
   width: 70vw;
+  min-width: 650px;
   height: 80vh;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: rgb(30, 30, 30);
   border-radius: 25px;
+}
+
+.title {
+  position: absolute;
+  top: 1%;
 }
 
 .avatar {
@@ -196,6 +202,21 @@
         cursor: pointer;
       }
     }
+  }
+}
+
+.sign_in {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  gap: 3em;
+  h1 {
+    font-size: 3.5em;
+  }
+  button {
+    font-size: 1em;
   }
 }
 

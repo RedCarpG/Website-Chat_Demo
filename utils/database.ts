@@ -52,12 +52,11 @@ const messagesRef = collection(firestore, "messages");
 
 export function useGetUser(uid: string) {
     const docRef = doc(userRef, uid);
-    return useDocumentData(docRef)
+    return useDocumentData(docRef);
 }
 
 export function useGetMessages(lim: number) {
     const queryMessage = query(messagesRef, orderBy("createdAt", "desc"), limit(lim));
-
     return useCollectionData(queryMessage);
 }
 
