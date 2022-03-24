@@ -1,0 +1,70 @@
+html,
+body {
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background-color: rgb(20, 20, 20);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+input {
+  border-radius: 15px;
+  padding: 0.25em;
+  padding-left: 1em;
+  border-style: none;
+  border-color: none;
+  border-width: 0;
+}
+
+button {
+  font-family: "Fredoka", sans-serif;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 25px;
+  color: white;
+  padding: 1em;
+  border-style: none;
+  border-width: 0;
+  background-color: rgb(67, 192, 150);
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+  scroll-padding-right: 20px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #666666;
+  border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(138, 138, 138);
+  border-radius: 5px;
+  margin-left: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(194, 194, 194);
+}
