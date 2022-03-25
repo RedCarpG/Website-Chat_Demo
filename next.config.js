@@ -6,6 +6,9 @@ const nextConfig = {
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],
   },
+  env: {
+    projectTitle: "Global Chat Room Demo",
+  }
 }
 
 module.exports = nextConfig

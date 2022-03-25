@@ -1,12 +1,12 @@
 # Website-Global Chat Demo
 
-> Preview the project on the webpage: [Portfolio Website](https://website-chat-demo.vercel.app)
+> Preview the project on the webpage: [Global Chat Room Demo](https://website-chat-demo.vercel.app)
 
 ## Overview
 
 -----------------------------
 
-This is a small demo project.
+This is a small demo chat room project created with NextJS and Firebase.
 
 ![img](https://github.com/RedCarpG/DOCS/blob/main/website_chat_room_demo/GlobalChatRoomDemo.png?raw=true)
 
@@ -54,6 +54,7 @@ Cute random profiles from [Big Heads API](https://bigheads.io/)
 - `JavaScript` / `TypeScript` / `SCSS`
 - [ReactJS](https://reactjs.org/) (JS Front-End framework)
 - [NextJS](https://nextjs.org/) (The React Framework for Production)
+- [Firebase](https://firebase.google.com/)
 
 ## 💁‍♂️ Author
 
