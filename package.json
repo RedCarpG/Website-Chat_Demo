@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@bigheads/core": "^0.3.3",
+    "bad-words": "^3.0.4",
     "firebase": "^9.6.9",
     "next": "12.1.0",
     "react": "17.0.2",
