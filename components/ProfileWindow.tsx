@@ -1,4 +1,4 @@
-import styles from "../styles/Home.module.scss";
+import styles from "../styles/ChatRoom.module.scss";
 import React, { FormEventHandler, useEffect, useRef, useState } from "react";
 import {
   MdOutlineEditNote,
@@ -8,21 +8,10 @@ import {
 
 import { useGetUser, signOut, saveUserProfile } from "../utils/database";
 
+import SignOut from "../components/SignOut";
+
 import Avatar from "../components/Avatar";
 import { getRandomOptions, AvatarType } from "../utils/avatar";
-
-const SignOut: React.FC = () => {
-  return (
-    <button
-      className={styles.sign_out}
-      onClick={() => {
-        signOut();
-      }}
-    >
-      Sign Out
-    </button>
-  );
-};
 
 interface ProfileWindowProps {
   uid: string;

@@ -14,6 +14,7 @@ import {
   setDoc,
   doc,
   getDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import { useCollectionData, useDocumentData } from "react-firebase-hooks/firestore";
 
@@ -79,10 +80,14 @@ export async function userNotExist(uid: string | undefined) {
     }
 }
 
-export function createNewAccount(uid: string) {
+export function createNewUserProfile(uid: string) {
     const newProfile: UserProfileType = {
         userName: `User${uid}`,
         userAvatar: getRandomOptions()
     };
     saveUserProfileDocument(newProfile);
+}
+
+export  function deletUserProfile(uid: string) {
+    deleteDoc(doc(firestore, "users", uid));
 }

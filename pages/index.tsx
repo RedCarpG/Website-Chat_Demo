@@ -1,17 +1,22 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.scss";
-
-import { useCurrentAuthUser } from "../utils/database";
-
-import ChatWindow from "../components/ChatWindow";
-import ProfileWindow from "../components/ProfileWindow";
+import stylesSignIn from "../styles/Auth.module.scss";
 import Footer from "../components/Footer";
-import SignIn from "../components/LogIn";
+import SignIn from "../components/SignIn";
+import Register from "../components/Register";
+import Router from "next/router";
+import { useState } from "react";
+import { useCurrentAuthUser } from "../utils/database";
+import ReactTooltip from "react-tooltip";
 
 const ChatDemo: NextPage = () => {
   const [user] = useCurrentAuthUser();
+  const [signInState, setSignInState] = useState<boolean>(true);
 
+  if (user) {
+    Router.push("/global");
+  }
   return (
     <>
       <Head>
@@ -19,15 +24,32 @@ const ChatDemo: NextPage = () => {
         <title>Chat Demo</title>
       </Head>
       <div className={styles.chat_demo}>
-        {user ? (
-          <>
-            <h1 className={styles.title}>{process.env.projectTitle}</h1>
-            <ChatWindow />
-            <ProfileWindow uid={user.uid} />
-          </>
-        ) : (
-          <SignIn />
-        )}
+        <div className={stylesSignIn.auth}>
+          <h1>{process.env.projectTitle}</h1>
+
+          {signInState ? <SignIn /> : <Register />}
+
+          <button
+            className={stylesSignIn.register_login_switch}
+            onClick={() => {
+              setSignInState(!signInState);
+            }}
+            data-tip
+            data-for="switchTip"
+          >
+            {signInState ? "Register" : "Sign In"}
+          </button>
+          <ReactTooltip
+            id="switchTip"
+            place="bottom"
+            type="info"
+            effect="solid"
+            delayShow={300}
+            className="tool_tip"
+          >
+            Switch to {signInState ? "Register" : "Sign In"} page
+          </ReactTooltip>
+        </div>
       </div>
       <Footer />
     </>

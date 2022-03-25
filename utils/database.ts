@@ -14,7 +14,7 @@ import {
     useCurrentAuthUser,
     isCurrentUser,
     SignInMethod,
-    signInAnonymous,
+    useCreateNewAccount,
 } from "./firebase/auth"
 
 export {
@@ -28,6 +28,7 @@ export {
     useCurrentAuthUser,
     isCurrentUser,
     SignInMethod,
-    signInAnonymous,
+    
+    useCreateNewAccount,
 }
 
