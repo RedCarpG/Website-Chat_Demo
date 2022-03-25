@@ -7,12 +7,12 @@ import {
   useGetMessages,
   storeMessage,
   isCurrentUser,
-  messageType,
 } from "../utils/database";
 import Avatar from "../components/Avatar";
+import { MessageType } from "../utils/type";
 
 interface ChatBoxProps {
-  message: messageType;
+  message: MessageType;
   style: any;
 }
 const ChatBox: React.FC<ChatBoxProps> = ({ message, style }) => {
@@ -72,7 +72,7 @@ const ChatRoom: React.FC = () => {
           <ChatBox
             style={{ order: 24 - index }}
             key={index}
-            message={msg as messageType}
+            message={msg as MessageType}
           />
         ))}
       </>
@@ -106,7 +106,7 @@ const ChatWindow: React.FC = () => {
         <ChatRoom />
         <form className={styles.chat_input} onSubmit={sendMessage}>
           <input
-            placeholder="Say something here"
+            placeholder="Join in the chat !"
             type="text"
             className={styles.chat_input_text}
             value={inputText}
