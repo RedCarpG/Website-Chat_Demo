@@ -14,6 +14,7 @@ import {
     Auth,
     AuthError,
     CustomParameters,
+    deleteUser,
 } from "firebase/auth";
 import { 
     useAuthState, 
@@ -28,7 +29,7 @@ import {
 export { SignInMethod }
 
 /* --- Local libs --- */
-import { userNotExist, createNewAccount } from "./firestore";
+import { userNotExist, createNewUserProfile, deletUserProfile } from "./firestore";
 import app from "./app"
 
 /* --- Code --- */
@@ -90,11 +91,20 @@ export function useSignInAnonymously(auth: Auth): SignInWithPopupHook {
 
 async function checkNewAccount(uid: string) {
     if (await userNotExist(uid)) {
-        createNewAccount(uid);
+        createNewUserProfile(uid);
     }
 }
 
 export function signOut() {
+    if (auth.currentUser?.isAnonymous) {
+        console.log("Anonymous")
+        const uid = auth.currentUser.uid
+        deleteUser(auth.currentUser).then(() => {
+            deletUserProfile(uid);
+        }).catch((error) => {
+            console.log(error)
+        });
+    }
     auth.signOut()
 }
 

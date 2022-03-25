@@ -29,7 +29,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ message, style }) => {
         <>
           <div>
             <div className={`${styles.name} ${styles.chat_box_name}`}>
-              {user?.userName}
+              {user ? user.userName : `User${uid}`}
             </div>
             <div className={styles.chat_box_content}>{text}</div>
           </div>
@@ -43,7 +43,13 @@ const ChatBox: React.FC<ChatBoxProps> = ({ message, style }) => {
             <Avatar {...user?.userAvatar} />
           </div>
           <div>
-            <div className={styles.chat_box_name}>{user?.userName}</div>
+            <div className={styles.chat_box_name}>
+              {user ? (
+                user.userName
+              ) : (
+                <span className={styles.anonymous}>{`User${uid}`}</span>
+              )}
+            </div>
             <div className={styles.chat_box_content}>{text}</div>
           </div>
         </>
