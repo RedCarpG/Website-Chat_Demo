@@ -2,9 +2,28 @@
  * 
 */
 
+import { useState } from "react";
+
 /* --- Firebase libs --- */
-import { getAuth, SignInMethod, signInAnonymously, onAuthStateChanged, UserCredential, Auth } from "firebase/auth";
-import { useAuthState, useSignInWithGoogle, useSignInWithGithub, useSignInWithEmailAndPassword, SignInWithPopupHook } from "react-firebase-hooks/auth";
+import { 
+    getAuth, 
+    SignInMethod, 
+    signInAnonymously,
+    onAuthStateChanged, 
+    UserCredential, 
+    Auth,
+    AuthError,
+    CustomParameters,
+} from "firebase/auth";
+import { 
+    useAuthState, 
+    useSignInWithGoogle, 
+    useSignInWithGithub, 
+    useSignInWithEmailAndPassword, 
+    useCreateUserWithEmailAndPassword,
+    SignInWithPopupHook,
+    EmailAndPasswordActionHook,
+} from "react-firebase-hooks/auth";
 
 export { SignInMethod }
 
@@ -29,27 +48,44 @@ onAuthStateChanged(auth, (user) => {
 
 /* --- Export Functions --- */
 
+export function useCreateNewAccount() {
+    return useCreateUserWithEmailAndPassword(auth);
+}
+
 export function useSignIn(signInMethod: string) {
-    let method = useSignInWithGoogle
-    if (signInMethod === SignInMethod.GOOGLE) {
+    let method: any;
+    if (signInMethod === SignInMethod.EMAIL_PASSWORD) {
+        method = useSignInWithEmailAndPassword
+    } else if (signInMethod === SignInMethod.GOOGLE) {
         method = useSignInWithGoogle;
     } else if (signInMethod === SignInMethod.GITHUB) {
         method = useSignInWithGithub;
-    } 
+    } else {
+        method = useSignInAnonymously;
+    }
     return method(auth);
 }
+export function useSignInAnonymously(auth: Auth): SignInWithPopupHook {
+    const [error, setError] = useState<AuthError | undefined>()
+    const [loading, setLoading] = useState(false)
+    const [user, setUser] = useState<UserCredential | undefined>()
 
-export function signInAnonymous() {
-    
-    let errorCode = null;
-    let errorMessage = null;
-    signInAnonymously(auth)
+    async function hook(scopes?: string[] | undefined, customOAuthParameters?: CustomParameters | undefined): Promise<void> {
+        setLoading(true);
+        return signInAnonymously(auth)
+        .then((result) => {
+            setLoading(false);
+            setUser({
+                user: result.user,
+                providerId: "",
+                operationType: "signIn"
+            })
+        })
         .catch((error) => {
-            errorCode = error.code;
-            errorMessage = error.message;
+            setError(error);
         });
-    if (errorCode) return `${errorCode}: ${errorMessage}`
-    return null
+    }
+    return [hook, user, loading, error];
 }
 
 async function checkNewAccount(uid: string) {
