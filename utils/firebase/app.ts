@@ -1,3 +1,6 @@
+/** utils/firebase/app.ts 
+ * 
+*/
 
 import { initializeApp } from "firebase/app";
 

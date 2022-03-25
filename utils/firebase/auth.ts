@@ -1,15 +1,33 @@
+/** utils/firebase/auth.ts 
+ * 
+*/
+
+/* --- Firebase libs --- */
 import { getAuth, SignInMethod, signInAnonymously, onAuthStateChanged, UserCredential, Auth } from "firebase/auth";
 import { useAuthState, useSignInWithGoogle, useSignInWithGithub, useSignInWithEmailAndPassword, SignInWithPopupHook } from "react-firebase-hooks/auth";
 
+export { SignInMethod }
+
+/* --- Local libs --- */
 import { userNotExist, createNewAccount } from "./firestore";
 import app from "./app"
 
+/* --- Code --- */
 const auth = getAuth(app);
 auth.useDeviceLanguage();
 
 export default auth;
 
-export { SignInMethod, signInAnonymously }
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        checkNewAccount(user.uid);
+        console.log(`Logged in: ${user.uid}`);
+    } else {
+        console.log("Logged out");
+    }
+})
+
+/* --- Export Functions --- */
 
 export function useSignIn(signInMethod: string) {
     let method = useSignInWithGoogle
@@ -40,15 +58,6 @@ async function checkNewAccount(uid: string) {
     }
 }
 
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        checkNewAccount(user.uid);
-        console.log(`Logged in: ${user.uid}`);
-    } else {
-        console.log("Logged out");
-    }
-})
-
 export function signOut() {
     auth.signOut()
 }
@@ -56,7 +65,6 @@ export function signOut() {
 export function useCurrentAuthUser() {
     return useAuthState(auth);
 }
-
 
 export function isCurrentUser(uid: string) {
     if (auth.currentUser) {

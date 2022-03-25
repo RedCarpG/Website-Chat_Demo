@@ -1,3 +1,8 @@
+/** utils/firebase/firestore.ts 
+ * 
+*/
+
+/* --- Firebase libs --- */
 import {
   getFirestore,
   collection,
@@ -11,12 +16,15 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { useCollectionData, useDocumentData } from "react-firebase-hooks/firestore";
-import { MessageType, UserProfileType } from "../type";
 
+/* --- Local libs --- */
+import { MessageType, UserProfileType } from "../type";
 import app from "./app"
 import auth from "./auth"
 import { getRandomOptions } from "../avatar"
+import { cleanBacWords } from "../textFilter";
 
+/* --- Code --- */
 const firestore = getFirestore(app);
 const userRef = collection(firestore, "users");
 const messagesRef = collection(firestore, "messages");
@@ -24,6 +32,7 @@ const messagesRef = collection(firestore, "messages");
 export default firestore;
 export { userRef, messagesRef };
 
+/* --- Export Functions --- */
 export function useGetUserDocumentData(uid: string) {
     const docRef = doc(userRef, uid);
     return useDocumentData(docRef);
@@ -34,10 +43,12 @@ export function useGetMessagesCollectionData(lim: number) {
     return useCollectionData(queryMessage);
 }
 
+
 export async function storeMessageDocument(text: string) {
     const user = auth.currentUser
     
     if (user !== null && text.trim().length !== 0) { 
+        text = cleanBacWords(text);
         const chatData: MessageType = {
             text: text,
             createdAt: serverTimestamp(),

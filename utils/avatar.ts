@@ -1,3 +1,7 @@
+/** utils/avatar.ts
+ * 
+ */
+
 // thanks to official https://github.com/RobertBroersma/bigheads/blob/main/site/src/utils/getRandomOptions.ts
 import {
   theme,
