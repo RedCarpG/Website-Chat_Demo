@@ -23,6 +23,8 @@ a {
 }
 
 input {
+  font-family: "Fredoka", sans-serif;
+  font-weight: 300;
   border-radius: 15px;
   padding: 0.25em;
   padding-left: 1em;
@@ -32,6 +34,17 @@ input {
 }
 h1 {
   color: white;
+}
+
+a {
+  transition-duration: 0.2s;
+  transform-origin: center;
+  &:hover {
+    transform: scale(110%, 110%);
+  }
+  &:active {
+    transform: scale(110%, 110%) translateY(10%);
+  }
 }
 
 button {
@@ -48,6 +61,21 @@ button {
   border-width: 0;
   width: fit-content;
   background-color: rgb(67, 192, 150);
+  transition-duration: 0.2s;
+  transform-origin: center;
+
+  &:hover {
+    transform: scale(110%, 110%);
+  }
+  &:active {
+    transform: scale(110%, 110%) translateY(10%);
+  }
+}
+
+div.tool_tip {
+  border-radius: 20px;
+  animation-delay: 1300;
+  transition-delay: 1300;
 }
 
 /* width */

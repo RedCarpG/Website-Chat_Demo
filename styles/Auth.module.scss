@@ -1,0 +1,80 @@
+@import "./color.scss";
+
+.auth {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 3em;
+  h1 {
+    font-size: 3.5em;
+  }
+
+  .sign_in {
+    background-color: rgb(24, 24, 24);
+    width: 70%;
+    padding: 2em;
+    border-radius: 30px;
+    .sign_in_email_psw {
+      background-color: rgb(71, 71, 71);
+      width: 100%;
+      padding: 1em;
+      padding-top: 2em;
+      border-radius: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 1em;
+      button {
+        margin-top: 1em;
+      }
+    }
+    .sign_in_other_methods {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 1em;
+    }
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    gap: 2em;
+    button {
+      font-size: 0.8em;
+    }
+  }
+
+  .register {
+    background-color: rgb(71, 71, 71);
+    width: 50%;
+    padding: 1em;
+    padding-top: 2em;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+  }
+}
+
+button.submit {
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+  background-color: $blue;
+}
+
+button.register_login_switch {
+  background-color: $red;
+  font-size: 1em;
+  padding-left: 2em;
+  padding-right: 2em;
+}
+
+button.sign_out {
+  background-color: $red;
+}
