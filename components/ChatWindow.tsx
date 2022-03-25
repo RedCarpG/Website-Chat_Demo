@@ -1,4 +1,4 @@
-import styles from "../styles/Home.module.scss";
+import styles from "../styles/ChatRoom.module.scss";
 import React, { FormEventHandler, useEffect, useRef, useState } from "react";
 import { MdOutlineSend } from "react-icons/md";
 
