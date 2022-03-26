@@ -7,7 +7,9 @@
   align-items: center;
   gap: 3em;
   h1 {
+    max-width: 90%;
     font-size: 3.5em;
+    text-align: center;
   }
 
   .sign_in {
@@ -77,4 +79,16 @@ button.register_login_switch {
 
 button.sign_out {
   background-color: $red;
+}
+
+@media screen and (max-width: 600px) {
+  .auth {
+    font-size: 0.7rem;
+    .sign_in {
+      min-width: 90%;
+    }
+    .register {
+      min-width: 90%;
+    }
+  }
 }
