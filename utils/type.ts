@@ -9,6 +9,7 @@ export interface UserType extends  User {}
 export interface UserProfileType {
     userName: string;
     userAvatar: AvatarType;
+    isAnonymous: boolean;
 }
 export interface MessageType {
     text: string;
