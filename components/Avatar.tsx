@@ -1,5 +1,5 @@
 import React from "react";
-import { BigHead, AvatarProps } from "@bigheads/core";
+import { BigHead } from "@bigheads/core";
 import { AvatarType } from "../utils/avatar";
 import styles from "../styles/Home.module.scss";
 

@@ -48,6 +48,8 @@ a {
 }
 
 button {
+  max-width: 100%;
+  overflow: hidden;
   user-select: none;
   font-family: "Fredoka", sans-serif;
   cursor: pointer;

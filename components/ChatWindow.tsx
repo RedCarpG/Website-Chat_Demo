@@ -1,6 +1,12 @@
 import styles from "../styles/ChatRoom.module.scss";
-import React, { FormEventHandler, useEffect, useRef, useState } from "react";
-import { MdOutlineSend } from "react-icons/md";
+import React, {
+  FormEventHandler,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { MdOutlineSend, MdPermIdentity } from "react-icons/md";
 
 import {
   useGetUser,
@@ -8,7 +14,9 @@ import {
   storeMessage,
   isCurrentUser,
 } from "../utils/database";
+import ReactTooltip from "react-tooltip";
 import Avatar from "../components/Avatar";
+import { getRandomOptions } from "../utils/avatar";
 import { MessageType } from "../utils/type";
 
 interface ChatBoxProps {
@@ -19,7 +27,30 @@ const ChatBox: React.FC<ChatBoxProps> = ({ message, style }) => {
   const { text, uid } = message;
   const isUser = isCurrentUser(uid);
 
-  const [user] = useGetUser(uid);
+  const [userProfile, loading, error, snapshot] = useGetUser(uid);
+
+  const avatar = useMemo(() => {
+    if (userProfile?.userAvatar) return userProfile?.userAvatar;
+    return getRandomOptions();
+  }, [userProfile]);
+
+  const userName = useMemo(() => {
+    if (loading) return "Loading user name...";
+    if (error) return "Error loading user name ❌";
+    if (userProfile)
+      return (
+        <span className={userProfile.isAnonymous ? styles.anonymous : ""}>
+          {userProfile.userName}
+        </span>
+      );
+    return (
+      <span className={styles.deleted_anonymous}>{`USER ${uid.slice(
+        0,
+        4
+      )}...`}</span>
+    );
+  }, [userProfile, uid, loading, error]);
+
   return (
     <div
       className={`message ${isUser ? styles.user_chat_box : styles.chat_box}`}
@@ -29,27 +60,21 @@ const ChatBox: React.FC<ChatBoxProps> = ({ message, style }) => {
         <>
           <div>
             <div className={`${styles.name} ${styles.chat_box_name}`}>
-              {user ? user.userName : `User${uid}`}
+              {userName}
             </div>
             <div className={styles.chat_box_content}>{text}</div>
           </div>
           <div className={styles.chat_box_profile}>
-            <Avatar {...user?.userAvatar} />
+            <Avatar {...avatar} />
           </div>
         </>
       ) : (
         <>
           <div className={styles.chat_box_profile}>
-            <Avatar {...user?.userAvatar} />
+            <Avatar {...avatar} />
           </div>
           <div>
-            <div className={styles.chat_box_name}>
-              {user ? (
-                user.userName
-              ) : (
-                <span className={styles.anonymous}>{`User${uid}`}</span>
-              )}
-            </div>
+            <div className={styles.chat_box_name}>{userName}</div>
             <div className={styles.chat_box_content}>{text}</div>
           </div>
         </>
@@ -97,7 +122,10 @@ const ChatRoom: React.FC = () => {
   );
 };
 
-const ChatWindow: React.FC = () => {
+interface ChatInputProps {
+  toggleProfile: Function;
+}
+const ChatInput: React.FC<ChatInputProps> = ({ toggleProfile }) => {
   const [inputText, setInputText] = useState("");
 
   const sendMessage: FormEventHandler<HTMLFormElement> = async (e) => {
@@ -105,29 +133,66 @@ const ChatWindow: React.FC = () => {
     await storeMessage(inputText);
     setInputText("");
   };
+  return (
+    <form className={styles.chat_input} onSubmit={sendMessage}>
+      <input
+        placeholder="Join in the chat !"
+        type="text"
+        className={styles.chat_input_text}
+        value={inputText}
+        onChange={(e) => {
+          e.preventDefault();
+          setInputText(e.target.value);
+        }}
+      />
+      <button
+        type="submit"
+        className={`${styles.send} ${styles.chat_input_send}`}
+      >
+        <MdOutlineSend />
+      </button>
+      <button
+        type="button"
+        className={`${styles.setting} ${styles.setting_toggle}`}
+        onClick={() => {
+          toggleProfile();
+        }}
+        data-tip
+        data-for="profileToggleTip"
+      >
+        <MdPermIdentity />
+      </button>
+      <ReactTooltip
+        id="profileToggleTip"
+        place="bottom"
+        type="light"
+        effect="solid"
+        delayShow={300}
+        className="tool_tip"
+      >
+        Toogle Profile page
+      </ReactTooltip>
+    </form>
+  );
+};
 
+interface ChatWindowProps {
+  toggleProfile: Function;
+  fullSize: boolean;
+}
+
+const ChatWindow: React.FC<ChatWindowProps> = ({ fullSize, toggleProfile }) => {
   return (
     <>
-      <div className={styles.chat_window}>
+      <div
+        className={
+          fullSize
+            ? `${styles.chat_window} ${styles.chat_window_fullsize}`
+            : styles.chat_window
+        }
+      >
         <ChatRoom />
-        <form className={styles.chat_input} onSubmit={sendMessage}>
-          <input
-            placeholder="Join in the chat !"
-            type="text"
-            className={styles.chat_input_text}
-            value={inputText}
-            onChange={(e) => {
-              e.preventDefault();
-              setInputText(e.target.value);
-            }}
-          />
-          <button
-            type="submit"
-            className={`${styles.send} ${styles.chat_input_send}`}
-          >
-            <MdOutlineSend />
-          </button>
-        </form>
+        <ChatInput toggleProfile={toggleProfile} />
       </div>
     </>
   );

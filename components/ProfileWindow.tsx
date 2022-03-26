@@ -1,9 +1,10 @@
 import styles from "../styles/ChatRoom.module.scss";
-import React, { FormEventHandler, useEffect, useRef, useState } from "react";
+import React, { FormEventHandler, useEffect, useState } from "react";
 import {
   MdOutlineEditNote,
   MdOutlineSaveAlt,
   MdOutlineShuffle,
+  MdWest,
 } from "react-icons/md";
 
 import { useGetUser, signOut, saveUserProfile } from "../utils/database";
@@ -12,19 +13,29 @@ import SignOut from "../components/SignOut";
 
 import Avatar from "../components/Avatar";
 import { getRandomOptions, AvatarType } from "../utils/avatar";
+import { User } from "firebase/auth";
+import ReactTooltip from "react-tooltip";
 
 interface ProfileWindowProps {
-  uid: string;
+  hide: boolean;
+  user: User;
+  toggleProfile: Function;
 }
-const ProfileWindow: React.FC<ProfileWindowProps> = ({ uid }) => {
-  const [user, loading, error, snapshot] = useGetUser(uid);
+const ProfileWindow: React.FC<ProfileWindowProps> = ({
+  toggleProfile,
+  hide,
+  user,
+}) => {
+  const [userProfile, loading, error, snapshot] = useGetUser(user.uid);
   const [editMode, setEditMode] = useState(false);
-  const [userName, setUserName] = useState(user?.userName);
-  const [userAvatar, setUserAvatar] = useState<AvatarType>(user?.userAvatar);
+  const [userName, setUserName] = useState(userProfile?.userName);
+  const [userAvatar, setUserAvatar] = useState<AvatarType>(
+    userProfile?.userAvatar
+  );
 
   let content = <></>;
   if (loading) {
-    content = <p>Loading</p>;
+    content = <p>Loading...</p>;
   } else if (error) {
     content = <p>Error: {error.message}</p>;
   } else {
@@ -32,16 +43,18 @@ const ProfileWindow: React.FC<ProfileWindowProps> = ({ uid }) => {
   }
 
   useEffect(() => {
-    setUserName(user?.userName);
-    setUserAvatar(user?.userAvatar);
-  }, [user]);
+    setUserName(userProfile?.userName);
+    setUserAvatar(userProfile?.userAvatar);
+  }, [userProfile]);
 
   const submitUpdateUser: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     saveUserProfile({
       userName: userName,
       userAvatar: userAvatar,
+      isAnonymous: user.isAnonymous,
     });
+    setEditMode(false);
   };
 
   const updateAvatar = () => {
@@ -50,10 +63,16 @@ const ProfileWindow: React.FC<ProfileWindowProps> = ({ uid }) => {
 
   return (
     <>
-      <div className={styles.profile_window}>
+      <div
+        className={
+          hide
+            ? `${styles.profile_window} ${styles.profile_window_hidden}`
+            : styles.profile_window
+        }
+      >
         <div>
           {content}
-          {user && (
+          {userProfile && (
             <form
               className={styles.profile_content}
               onSubmit={submitUpdateUser}
@@ -66,9 +85,21 @@ const ProfileWindow: React.FC<ProfileWindowProps> = ({ uid }) => {
                   onClick={() => {
                     updateAvatar();
                   }}
+                  data-tip
+                  data-for="avatarTip"
                 >
                   <MdOutlineShuffle />
                 </button>
+                <ReactTooltip
+                  id="avatarTip"
+                  place="right"
+                  type="light"
+                  effect="solid"
+                  delayShow={300}
+                  className="tool_tip"
+                >
+                  Shuffle your Avatar
+                </ReactTooltip>
               </div>
               {editMode ? (
                 <div className={`${styles.name} ${styles.profile_name}`}>
@@ -101,12 +132,47 @@ const ProfileWindow: React.FC<ProfileWindowProps> = ({ uid }) => {
                 </div>
               )}
 
-              <button type="submit" className={styles.update}>
+              <button
+                type="submit"
+                className={styles.update}
+                data-tip
+                data-for="updateTip"
+              >
                 Update
               </button>
+              <ReactTooltip
+                id="updateTip"
+                place="bottom"
+                type="light"
+                effect="solid"
+                delayShow={300}
+                className="tool_tip"
+              >
+                Comfirm and update your profile
+              </ReactTooltip>
             </form>
           )}
 
+          <button
+            className={styles.back}
+            data-tip
+            data-for="backTip"
+            onClick={() => {
+              toggleProfile();
+            }}
+          >
+            <MdWest />
+          </button>
+          <ReactTooltip
+            id="backTip"
+            place="bottom"
+            type="light"
+            effect="solid"
+            delayShow={300}
+            className="tool_tip"
+          >
+            Back to chat room
+          </ReactTooltip>
           <SignOut />
         </div>
       </div>

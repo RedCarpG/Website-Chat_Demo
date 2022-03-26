@@ -1,6 +1,11 @@
 @import "./color.scss";
+
+$yellow: yellow;
 .anonymous {
-  color: $red;
+  color: $yellow;
+}
+.deleted_anonymous {
+  color: black;
 }
 
 .redirect {
@@ -18,6 +23,8 @@
 }
 
 .chat_window {
+  transition-duration: 0.5s;
+  transition-timing-function: linear;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -26,7 +33,6 @@
   width: 70%;
   min-width: 400px;
   height: 100%;
-  min-height: 700px;
   color: white;
   padding: 25px;
   padding-right: 15px;
@@ -56,12 +62,13 @@
     }
     .chat_box_name {
       font-size: 12px;
+      margin-left: 0.5em;
     }
     .chat_box_content {
       width: fit-content;
       padding: 0.5em;
-      padding-left: 1em;
-      padding-right: 1em;
+      padding-left: 0.8em;
+      padding-right: 0.8em;
       margin-top: 0.5em;
       background-color: rgb(121, 121, 121);
       border-radius: 20px;
@@ -84,6 +91,8 @@
       }
 
       .chat_box_name {
+        margin-left: 0;
+        margin-right: 1em;
         text-align: right;
       }
     }
@@ -99,16 +108,25 @@
     border-radius: 15px;
 
     .chat_input_text {
-      width: calc(100% - 50px);
+      width: calc(100% - 6em);
       height: 70%;
     }
     .chat_input_send {
+      font-size: 1rem;
+    }
+
+    .setting_toggle {
       font-size: 1rem;
     }
   }
 }
 
 .profile_window {
+  transition: all;
+  transition-duration: 1s;
+  transition-timing-function: linear;
+  transition: visibility 0.2s, opacity 0.5s linear, width 0.5s linear,
+    padding-right 0.5s linear;
   width: 30%;
   height: 100%;
   display: flex;
@@ -135,13 +153,13 @@
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    gap: 1em;
+    gap: 0.5em;
     width: 100%;
     color: white;
     .profile_pic {
       width: 90%;
       position: relative;
-      .profile_pic_shuffle {
+      button.profile_pic_shuffle {
         position: absolute;
         padding: 0.5em;
         font-size: 1rem;
@@ -197,7 +215,61 @@ button.send {
   background-color: $blue;
 }
 
+button.setting {
+  width: 2.5em;
+  height: 2.5em;
+  padding: 0;
+}
+
 button.update {
-  margin-top: 2em;
+  margin-top: 1em;
   background-color: $blue;
+}
+
+@media screen and (min-width: 600px) {
+  .chat_window_fullsize {
+    width: 100%;
+  }
+  .profile_window_hidden {
+    visibility: hidden;
+    opacity: 0;
+    width: 1%;
+    padding-right: 0;
+  }
+  button.back {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .title {
+    font-size: 1em;
+    top: -8%;
+  }
+  .chat_window {
+    font-size: 0.7rem;
+    width: 100%;
+    min-width: 300px;
+    min-height: 0;
+    padding: 15px;
+  }
+  .profile_window {
+    position: absolute;
+    width: 1%;
+    display: none;
+  }
+
+  .chat_window_fullsize {
+    display: none;
+  }
+  .profile_window_hidden {
+    display: block;
+    width: 100%;
+    padding: 15px;
+  }
+  button.back {
+    position: absolute;
+    left: 10%;
+    bottom: 6%;
+  }
 }

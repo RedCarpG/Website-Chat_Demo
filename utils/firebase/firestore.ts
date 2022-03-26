@@ -24,6 +24,7 @@ import app from "./app"
 import auth from "./auth"
 import { getRandomOptions } from "../avatar"
 import { cleanBacWords } from "../textFilter";
+import { User } from "firebase/auth";
 
 /* --- Code --- */
 const firestore = getFirestore(app);
@@ -64,6 +65,7 @@ export async function saveUserProfileDocument(newProfile: UserProfileType) {
         await setDoc(doc(firestore, "users", auth.currentUser?.uid), {
             userAvatar: newProfile.userAvatar,
             userName: newProfile.userName,
+            isAnonymous: newProfile.isAnonymous,
         });
     }
 }
@@ -80,10 +82,11 @@ export async function userNotExist(uid: string | undefined) {
     }
 }
 
-export function createNewUserProfile(uid: string) {
+export function createNewUserProfile(user: User) {
     const newProfile: UserProfileType = {
-        userName: `User${uid}`,
-        userAvatar: getRandomOptions()
+        userName: user.displayName ? user.displayName :`User${user.uid}`,
+        userAvatar: getRandomOptions(),
+        isAnonymous: user.isAnonymous,
     };
     saveUserProfileDocument(newProfile);
 }
