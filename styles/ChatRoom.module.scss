@@ -273,3 +273,9 @@ button.update {
     bottom: 6%;
   }
 }
+
+@media screen and (max-height: 600px) {
+  .title {
+    font-size: 1em;
+  }
+}
