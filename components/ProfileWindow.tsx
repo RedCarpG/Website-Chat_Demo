@@ -7,7 +7,7 @@ import {
   MdWest,
 } from "react-icons/md";
 
-import { useGetUser, signOut, saveUserProfile } from "../utils/database";
+import { useGetUser, saveUserProfile } from "../utils/database";
 
 import SignOut from "../components/SignOut";
 
