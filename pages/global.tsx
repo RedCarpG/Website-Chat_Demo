@@ -22,7 +22,16 @@ const GlobalRoom: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Global Chat Room</title>
+        <title>Web Chat Room - RedCarpG </title>
+        <meta
+          name="description"
+          content="A Web Chat demo application project created with Firebase, NextJS. Feel free to visit my Github page for source code."
+        ></meta>
+        <meta
+          name="keywords"
+          content="ReactJS, NextJS, Firebase, Web Chat, Web Application"
+        ></meta>
+        <meta name="author" content="RedCarpG"></meta>
       </Head>
       <div className={styles.chat_demo}>
         {user ? (
