@@ -49,25 +49,6 @@ const ChatBox: React.FC<ChatBoxProps> = ({ message, style }) => {
     }
   }, [userProfile]);
 
-  // const userName = useMemo(() => {
-  //   if (loading) return "Loading user name...";
-  //   else if (error) return "Error loading user name ❌";
-  //   else if (userProfile)
-  //     return (
-  //       <span className={userProfile.isAnonymous ? styles.anonymous : ""}>
-  //         {userProfile.userName}
-  //       </span>
-  //     );
-  //   return (
-  //     <span className={styles.deleted_anonymous}>{`USER ${uid.slice(
-  //       0,
-  //       4
-  //     )}...`}</span>
-  //   );
-  // }, [userProfile, uid, loading, error]);
-
-  console.log(userProfile?.userName);
-
   return (
     <>
       {!loading && !error && (
