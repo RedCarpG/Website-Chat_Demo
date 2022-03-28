@@ -1,6 +1,7 @@
 import styles from "../styles/ChatRoom.module.scss";
 import React, {
   FormEventHandler,
+  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -29,57 +30,60 @@ const ChatBox: React.FC<ChatBoxProps> = ({ message, style }) => {
 
   const [userProfile, loading, error, snapshot] = useGetUser(uid);
 
-  const avatar = useMemo(() => {
-    if (userProfile?.userAvatar) return userProfile?.userAvatar;
-    return getRandomOptions();
-  }, [userProfile]);
+  const [userName, setUserName] = useState(
+    <span className={styles.deleted_anonymous}>{`USER ${uid.slice(
+      0,
+      4
+    )}...`}</span>
+  );
+  const [avatar, setAvatar] = useState(getRandomOptions());
 
-  const userName = useMemo(() => {
-    if (loading) return "Loading user name...";
-    if (error) return "Error loading user name ❌";
-    if (userProfile)
-      return (
+  useEffect(() => {
+    if (userProfile?.userAvatar) {
+      setAvatar(userProfile?.userAvatar);
+      setUserName(
         <span className={userProfile.isAnonymous ? styles.anonymous : ""}>
           {userProfile.userName}
         </span>
       );
-    return (
-      <span className={styles.deleted_anonymous}>{`USER ${uid.slice(
-        0,
-        4
-      )}...`}</span>
-    );
-  }, [userProfile, uid, loading, error]);
+    }
+  }, [userProfile]);
 
   return (
-    <div
-      className={`message ${isUser ? styles.user_chat_box : styles.chat_box}`}
-      style={style}
-    >
-      {isUser ? (
-        <>
-          <div>
-            <div className={`${styles.name} ${styles.chat_box_name}`}>
-              {userName}
-            </div>
-            <div className={styles.chat_box_content}>{text}</div>
-          </div>
-          <div className={styles.chat_box_profile}>
-            <Avatar {...avatar} />
-          </div>
-        </>
-      ) : (
-        <>
-          <div className={styles.chat_box_profile}>
-            <Avatar {...avatar} />
-          </div>
-          <div>
-            <div className={styles.chat_box_name}>{userName}</div>
-            <div className={styles.chat_box_content}>{text}</div>
-          </div>
-        </>
+    <>
+      {!loading && !error && (
+        <div
+          className={`message ${
+            isUser ? styles.user_chat_box : styles.chat_box
+          }`}
+          style={style}
+        >
+          {isUser ? (
+            <>
+              <div className={styles.chat_box_left}>
+                <div className={`${styles.name} ${styles.chat_box_name}`}>
+                  {userName}
+                </div>
+                <div className={styles.chat_box_content}>{text}</div>
+              </div>
+              <div className={styles.chat_box_profile}>
+                <Avatar {...avatar} />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className={styles.chat_box_profile}>
+                <Avatar {...avatar} />
+              </div>
+              <div className={styles.chat_box_left}>
+                <div className={styles.chat_box_name}>{userName}</div>
+                <div className={styles.chat_box_content}>{text}</div>
+              </div>
+            </>
+          )}
+        </div>
       )}
-    </div>
+    </>
   );
 };
 
@@ -87,9 +91,17 @@ const ChatRoom: React.FC = () => {
   const [messages, loading, error, snapshot] = useGetMessages(25);
   const bottomRef = useRef<HTMLDivElement>(null);
 
+  const audio = useMemo(() => {
+    return new Audio("./notif.mp3");
+  }, []);
+
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    audio.play();
+    return () => {
+      audio.pause();
+    };
+  }, [messages, audio]);
 
   let content = <></>;
   if (loading) {

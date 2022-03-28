@@ -64,6 +64,9 @@ $yellow: yellow;
       font-size: 12px;
       margin-left: 0.5em;
     }
+    .chat_box_left {
+      max-width: 80%;
+    }
     .chat_box_content {
       width: fit-content;
       padding: 0.5em;
@@ -72,6 +75,9 @@ $yellow: yellow;
       margin-top: 0.5em;
       background-color: rgb(121, 121, 121);
       border-radius: 20px;
+      word-wrap: break-word;
+      white-space: normal;
+      max-width: 100%;
     }
     .chat_box,
     .user_chat_box {
