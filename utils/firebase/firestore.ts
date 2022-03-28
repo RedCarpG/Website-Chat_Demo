@@ -29,7 +29,14 @@ import { User } from "firebase/auth";
 /* --- Code --- */
 const firestore = getFirestore(app);
 const userRef = collection(firestore, "users");
-const messagesRef = collection(firestore, "messages");
+const chatRoomsRef = collection(firestore, "chatRooms");
+
+let room = "global"
+if (process.env.NODE_ENV === "development") {
+    room = "test"
+}
+const roomRef = doc(chatRoomsRef, room);
+const messagesRef = collection(roomRef, "messages");
 
 export default firestore;
 export { userRef, messagesRef };
