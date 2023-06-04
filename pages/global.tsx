@@ -1,16 +1,21 @@
+/** ----- Import ----- */
+// Next React
 import type { NextPage } from "next";
 import Head from "next/head";
 import Router from "next/router";
-
+import { useState } from "react";
+import { MdLogin } from "react-icons/md";
+// Style
 import styles from "../styles/Home.module.scss";
 import stylesChatRoom from "../styles/ChatRoom.module.scss";
-
+// DB
 import { useCurrentAuthUser } from "../utils/database";
-
+// Components
 import ChatWindow from "../components/ChatWindow";
 import ProfileWindow from "../components/ProfileWindow";
 import Footer from "../components/Footer";
-import { useState } from "react";
+
+/** ----- Code ----- */
 
 const GlobalRoom: NextPage = () => {
   const [user] = useCurrentAuthUser();
@@ -48,11 +53,13 @@ const GlobalRoom: NextPage = () => {
           <div className={stylesChatRoom.redirect}>
             <p>Someone forgets to sign in ? 🤨</p>
             <button
+              title="Sign In"
+              type="button"
               onClick={() => {
                 Router.push("/");
               }}
             >
-              Sign In
+              <MdLogin />
             </button>
           </div>
         )}

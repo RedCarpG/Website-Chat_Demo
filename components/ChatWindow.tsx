@@ -31,10 +31,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ message, style }) => {
   const [userProfile, loading, error, snapshot] = useGetUser(uid);
 
   const [userName, setUserName] = useState(
-    <span className={styles.deleted_anonymous}>{`USER ${uid.slice(
-      0,
-      4
-    )}...`}</span>
+    <span className={styles.deleted_anonymous}>{`Deleted User`}</span>
   );
   const [avatar, setAvatar] = useState(getRandomOptions());
 
@@ -43,7 +40,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ message, style }) => {
       setAvatar(userProfile?.userAvatar);
       setUserName(
         <span className={userProfile.isAnonymous ? styles.anonymous : ""}>
-          {userProfile.userName}
+          {userProfile.isAnonymous ? "Anonymous" : userProfile.userName}
         </span>
       );
     }
@@ -53,9 +50,8 @@ const ChatBox: React.FC<ChatBoxProps> = ({ message, style }) => {
     <>
       {!loading && !error && (
         <div
-          className={`message ${
-            isUser ? styles.user_chat_box : styles.chat_box
-          }`}
+          className={`message ${isUser ? styles.user_chat_box : styles.chat_box
+            }`}
           style={style}
         >
           {isUser ? (
@@ -76,7 +72,9 @@ const ChatBox: React.FC<ChatBoxProps> = ({ message, style }) => {
                 <Avatar {...avatar} />
               </div>
               <div className={styles.chat_box_left}>
-                <div className={styles.chat_box_name}>{userName}</div>
+                <div className={styles.chat_box_name}>
+                  {userName}
+                </div>
                 <div className={styles.chat_box_content}>{text}</div>
               </div>
             </>

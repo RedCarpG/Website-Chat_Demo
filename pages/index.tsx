@@ -9,6 +9,7 @@ import Router from "next/router";
 import { useState } from "react";
 import { useCurrentAuthUser } from "../utils/database";
 import ReactTooltip from "react-tooltip";
+import { MdArrowBack } from "react-icons/md";
 
 const ChatDemo: NextPage = () => {
   const [user] = useCurrentAuthUser();
@@ -17,6 +18,7 @@ const ChatDemo: NextPage = () => {
   if (user) {
     Router.push("/global");
   }
+
   return (
     <>
       <Head>
@@ -30,6 +32,8 @@ const ChatDemo: NextPage = () => {
           {signInState ? <SignIn /> : <Register />}
 
           <button
+            title="Sign In"
+            type="button"
             className={stylesSignIn.register_login_switch}
             onClick={() => {
               setSignInState(!signInState);
@@ -37,7 +41,7 @@ const ChatDemo: NextPage = () => {
             data-tip
             data-for="switchTip"
           >
-            {signInState ? "Register" : "Sign In"}
+            {signInState ? "Register" : <><div className={styles.icon}><MdArrowBack /></div> Back</>}
           </button>
           <ReactTooltip
             id="switchTip"

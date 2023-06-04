@@ -7,18 +7,21 @@
   align-items: center;
   gap: 2em;
   min-width: 90%;
+  min-height: 90%;
 
   h1 {
     max-width: 90%;
     font-size: 3.5em;
     text-align: center;
-    margin-bottom: 0;
+    margin-bottom: 1em;
+    margin-top: 0.5em;
   }
 
   .sign_in {
     background-color: rgb(24, 24, 24);
     min-width: 50%;
     padding: 2em;
+    padding-bottom: 1.5em;
     border-radius: 30px;
 
     display: flex;
@@ -26,27 +29,36 @@
     justify-content: center;
     align-items: center;
     color: white;
-    gap: 1.5em;
+    gap: 1em;
 
     p {
       margin: 0;
+    }
+
+    .title {
+
+      font-size: 2em;
     }
 
     .sign_in_email_psw {
       background-color: rgb(71, 71, 71);
       width: 100%;
       padding: 1em;
-      padding-top: 2em;
+      padding-top: 1.7em;
       border-radius: 30px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       gap: 1em;
+
       button {
-        margin-top: 1em;
+        font-size: 0.8em;
+        margin-top: 0em;
+        padding: 0.7em 1.2em 0.7em 1.2em;
       }
     }
+
     .sign_in_other_methods {
       display: flex;
       flex-direction: row;
@@ -54,6 +66,8 @@
       align-items: center;
       gap: 1em;
     }
+
+
     button {
       font-size: 0.8em;
     }
@@ -82,12 +96,15 @@ button.submit {
 button.register_login_switch {
   background-color: $red;
   font-size: 1em;
-  padding-left: 2em;
-  padding-right: 2em;
+  padding: 0.8em 1.3em 0.8em 1.3em;
 }
 
 button.sign_out {
   background-color: $red;
+}
+
+button.sign_in_anonymous {
+  background-color: $purple;
 }
 
 @media screen and (max-width: 1100px) {
@@ -112,9 +129,11 @@ button.sign_out {
 @media screen and (max-width: 600px) {
   .auth {
     font-size: 0.7rem;
+
     .sign_in {
       min-width: 90%;
     }
+
     .register {
       min-width: 90%;
     }
@@ -132,6 +151,7 @@ button.sign_out {
   .auth {
     font-size: 0.7rem;
     gap: 1.5em;
+
     .sign_in {
       padding-bottom: 1em;
       padding-top: 1em;

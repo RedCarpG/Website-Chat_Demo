@@ -5,14 +5,14 @@
 import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC482jtO0NMH_aOCuwHC6HzPmcLp37FeqI",
-  authDomain: "chatdemo-e2489.firebaseapp.com",
-  databaseURL: "https://chatdemo-e2489-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "chatdemo-e2489",
-  storageBucket: "chatdemo-e2489.appspot.com",
-  messagingSenderId: "668382150331",
-  appId: "1:668382150331:web:cc0110341143d71ea3f39e",
-  measurementId: "G-QD1JXQF2RX"
+  apiKey: process.env.NEXT_PUBLIC_DB_APIKEY,
+  authDomain: process.env.NEXT_PUBLIC_DB_AUTH_DOMAIN,
+  databaseURL: process.env.NEXT_PUBLIC_DB_URL,
+  projectId: process.env.NEXT_PUBLIC_DB_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_DB_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_DB_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_DB_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_DB_MEASUREMENT_ID
 };
 
 const app = initializeApp(firebaseConfig);
