@@ -35,7 +35,7 @@ const userRef = collection(firestore, "users");
 const chatRoomsRef = collection(firestore, "chatRooms");
 
 let room = "global"
-if (process.env.NODE_ENV === "development") {
+if (process.env.NEXT_PUBLIC_ENV === "dev") {
     room = "test"
 }
 const roomRef = doc(chatRoomsRef, room);
