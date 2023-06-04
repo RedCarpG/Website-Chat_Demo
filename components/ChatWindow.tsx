@@ -40,7 +40,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ message, style }) => {
       setAvatar(userProfile?.userAvatar);
       setUserName(
         <span className={userProfile.isAnonymous ? styles.anonymous : ""}>
-          {userProfile.isAnonymous ? "Anonymous" : userProfile.userName}
+          {userProfile.userName}
         </span>
       );
     }
