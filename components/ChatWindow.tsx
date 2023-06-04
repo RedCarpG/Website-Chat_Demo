@@ -92,6 +92,7 @@ const ChatRoom: React.FC = () => {
   const audio = useMemo(() => {
     return new Audio("./notif.mp3");
   }, []);
+  audio.volume = 0.5;
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
