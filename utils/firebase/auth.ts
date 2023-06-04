@@ -9,7 +9,6 @@ import {
     SignInMethod,
     getAuth,
     signInAnonymously,
-    signInWithCustomToken,
     UserCredential,
     Auth,
     AuthError,
@@ -83,19 +82,6 @@ function useSignInAnonymously(auth: Auth) {
     }
     return [hook, user, loading, error];
 }
-
-function useSignInToken(auth: Auth): SignInWithPopupHook {
-    const [error, setError] = useState<AuthError | undefined>()
-    const [loading, setLoading] = useState(false)
-    const [user, setUser] = useState<UserCredential | undefined>()
-
-    async function hook(scopes?: string[] | undefined, customOAuthParameters?: CustomParameters | undefined): Promise<UserCredential> {
-        setLoading(true);
-        return signInWithCustomToken(auth);
-    }
-    return [hook, user, loading, error];
-}
-
 
 /* Sign Out */
 
