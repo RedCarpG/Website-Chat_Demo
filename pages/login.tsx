@@ -1,7 +1,6 @@
 import type { NextPage } from "next";
-import Head from "next/head";
-import Router from "next/router";
-import { useState, lazy } from "react";
+import { useRouter } from "next/router";
+import { useState } from "react";
 import ReactTooltip from "react-tooltip";
 import { MdArrowBack } from "react-icons/md";
 import styles from "../styles/Home.module.scss";
@@ -9,14 +8,14 @@ import stylesSignIn from "../styles/Auth.module.scss";
 import { useCurrentAuthUser } from "../utils/database";
 import SignIn from "../components/SignIn";
 import Register from "../components/Register";
-import Footer from "../components/Footer";
 
 const LoginPage: NextPage = () => {
+  const router = useRouter();
   const [user] = useCurrentAuthUser();
   const [signInState, setSignInState] = useState<boolean>(true);
 
   if (user) {
-    Router.push("/global").catch((e) => {
+    router.push("/global").catch((e) => {
       console.log(e);
     });
   }

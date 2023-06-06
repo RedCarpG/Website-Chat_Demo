@@ -23,7 +23,7 @@ function ChatDemoApp({ Component, pageProps }: AppProps) {
     // Bound onAuthStateChanged callback
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        checkUserFirstLogin(user);
+        checkUserFirstLogin(user).catch(console.error);
         console.log(`Logged in: ${user.uid}`);
       } else {
         console.log(`Logged out`);

@@ -1,7 +1,6 @@
 import styles from "../../styles/ChatRoom.module.scss";
 import React, {
     useEffect,
-    useMemo,
     useState,
 } from "react";
 
@@ -12,7 +11,7 @@ import {
 } from "../../utils/database";
 import Avatar from "../Avatar";
 import { getRandomOptions } from "../../utils/avatar";
-import { DocumentData, DocumentSnapshot } from "firebase/firestore";
+import { DocumentData } from "firebase/firestore";
 
 interface ChatProfileProps {
     userId: string;

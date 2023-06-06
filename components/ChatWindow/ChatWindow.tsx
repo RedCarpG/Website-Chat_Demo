@@ -24,7 +24,6 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ messageIds }) => {
 
   const audio = useMemo(() => {
     let a = new Audio("./notif.mp3");
-    a.muted = true;
     a.volume = 0.3;
     return a;
   }, []);
@@ -34,10 +33,14 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ messageIds }) => {
   }
 
   useEffect(() => {
+    const playAudio = async () => {
+      await audio.play();
+    }
+    playAudio().catch(console.error);
     setTimeout(() => {
       scrollToBottom();
-    }, 200);
-  }, [messageIds])
+    }, 100);
+  }, [messageIds, audio])
 
   return (
     <>
@@ -63,8 +66,8 @@ interface ChatWindowProps {
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ fullSize, toggleProfile }) => {
   console.log(">------ ChatWindow ------<");
-  const [msgInit, loadingInit, errorInit, snapshotInit] = useGetAllMsgOnce(INIT_MESSAGE_NUM);
-  const [msg, loading, error, snapShot] = useGetNewMsg();
+  const [, loadingInit, errorInit, snapshotInit] = useGetAllMsgOnce(INIT_MESSAGE_NUM);
+  const [, , , snapShot] = useGetNewMsg();
   const [messageIds, setMessageIds] = useState([] as string[]);
 
   // Init messages

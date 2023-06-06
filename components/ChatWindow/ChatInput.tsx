@@ -17,11 +17,11 @@ const ChatInput: React.FC<ChatInputProps> = ({ toggleProfile }) => {
     console.log(">----- ChatInput -----<");
     const [inputText, setInputText] = useState("");
 
-    const sendMessage: FormEventHandler<HTMLFormElement> = async (e) => {
+    const sendMessage: FormEventHandler<HTMLFormElement> = (e) => {
         console.log("--- Send Message");
         e.preventDefault();
-        await storeMessage(inputText);
         setInputText("");
+        storeMessage(inputText).catch(console.error);
     };
     return (
         <form className={styles.chat_input} onSubmit={sendMessage}>

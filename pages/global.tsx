@@ -1,7 +1,6 @@
 /** ----- Import ----- */
 // Next React
 import type { NextPage } from "next";
-import Head from "next/head";
 import Router from "next/router";
 import { useState } from "react";
 import { MdLogin } from "react-icons/md";
@@ -13,7 +12,6 @@ import { useCurrentAuthUser } from "../utils/database";
 // Components
 import ChatWindow from "../components/ChatWindow/ChatWindow";
 import ProfileWindow from "../components/ProfileWindow";
-import Footer from "../components/Footer";
 
 /** ----- Code ----- */
 
@@ -44,7 +42,7 @@ const GlobalRoom: NextPage = () => {
               title="Sign In"
               type="button"
               onClick={() => {
-                Router.push("/");
+                Router.push("/").catch(console.error);
               }}
             >
               <MdLogin />

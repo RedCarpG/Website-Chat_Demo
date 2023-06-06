@@ -15,9 +15,8 @@ import {
     doc,
     getDoc,
     deleteDoc,
-    where,
 } from "firebase/firestore";
-import { useCollectionData, useCollectionDataOnce, useDocumentData, useCollection, useCollectionOnce, useDocumentDataOnce } from "react-firebase-hooks/firestore";
+import { useCollectionData, useCollectionDataOnce, } from "react-firebase-hooks/firestore";
 /* --- Local libs --- */
 import { MessageType, UserProfileType } from "../type";
 import app from "./app"
@@ -79,7 +78,6 @@ function getUserDocumentData(uid: string) {
     const docRef = doc(userRef, uid);
     const docSnap = getDoc(docRef);
     return docSnap;
-    // return useDocumentDataOnce(docRef);
 }
 
 async function saveUserProfileDocument(newProfile: UserProfileType) {
@@ -115,11 +113,11 @@ function createNewUserProfile(user: User | undefined) {
         userAvatar: getRandomOptions(),
         isAnonymous: user?.isAnonymous ? true : false,
     };
-    saveUserProfileDocument(newProfile);
+    saveUserProfileDocument(newProfile).catch(console.log);
 }
 
 function deletUserProfile(uid: string) {
-    deleteDoc(doc(firestore, "users", uid));
+    deleteDoc(doc(firestore, "users", uid)).catch(console.log);
 }
 
 /** 
