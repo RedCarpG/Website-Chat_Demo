@@ -11,7 +11,7 @@ import stylesChatRoom from "../styles/ChatRoom.module.scss";
 // DB
 import { useCurrentAuthUser } from "../utils/database";
 // Components
-import ChatWindow from "../components/ChatWindow";
+import ChatWindow from "../components/ChatWindow/ChatWindow";
 import ProfileWindow from "../components/ProfileWindow";
 import Footer from "../components/Footer";
 

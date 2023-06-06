@@ -3,10 +3,12 @@
  */
 
 import {
-    useGetMessagesCollectionData,
+    useGetNewMessagesCollectionData,
+    useGetAllMessagesCollectionDataOnce,
+    getMessagesCollectionData,
     storeMessageDocument,
 
-    useGetUserDocumentData,
+    getUserDocumentData,
     saveUserProfileDocument,
     createNewUserProfile,
     userNotExist,
@@ -42,10 +44,12 @@ export {
     useCurrentAuthUser,
     isCurrentUser,
 
-    useGetMessagesCollectionData as useGetMessages,
+    getMessagesCollectionData as getMsgDataOnce,
+    useGetNewMessagesCollectionData as useGetNewMsg,
+    useGetAllMessagesCollectionDataOnce as useGetAllMsgOnce,
     storeMessageDocument as storeMessage,
     createNewUserProfile,
-    useGetUserDocumentData as useGetUser,
+    getUserDocumentData as getUser,
     saveUserProfileDocument as saveUserProfile,
     userNotExist,
 }

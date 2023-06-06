@@ -9,7 +9,7 @@ import {
   MdSave,
 } from "react-icons/md";
 
-import { User, useGetUser, saveUserProfile, updateUsername } from "../utils/database";
+import { User, getUser, saveUserProfile, updateUsername } from "../utils/database";
 import ReactTooltip from "react-tooltip";
 
 import { getRandomOptions, AvatarType } from "../utils/avatar";
@@ -27,29 +27,21 @@ const ProfileWindow: React.FC<ProfileWindowProps> = ({
   hide,
   user,
 }) => {
-  const [userProfile, loading, error, snapshot] = useGetUser(user.uid);
+
   const [editMode, setEditMode] = useState(false);
-  const [userName, setUserName] = useState(userProfile?.userName);
-  const [userAvatar, setUserAvatar] = useState<AvatarType>(
-    userProfile?.userAvatar
-  );
-
+  const [userName, setUserName] = useState("Anonymous");
+  const [userAvatar, setUserAvatar] = useState<AvatarType>(getRandomOptions());
   useEffect(() => {
-    setUserName(userProfile?.userName);
-    setUserAvatar(userProfile?.userAvatar);
-  }, [userProfile]);
-
-
-  let content = <></>;
-
-  // Loading && Error
-  if (loading) {
-    content = <p>Loading...</p>;
-  } else if (error) {
-    content = <p>Error: {error.message}</p>;
-  } else {
-    content = <></>;
-  }
+    getUser(user.uid).then((data) => {
+      let profile = data.data();
+      if (profile) {
+        setUserAvatar(profile?.userAvatar);
+        setUserName(profile?.userName);
+      }
+    }).catch((e) => {
+      console.log(e);
+    });
+  }, [user])
 
   const submitUpdateUser: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -57,11 +49,17 @@ const ProfileWindow: React.FC<ProfileWindowProps> = ({
       userName: userName,
       userAvatar: userAvatar,
       isAnonymous: user.isAnonymous,
+    }).then(() => {
+      console.log("Save user");
+      if (!user.isAnonymous) {
+        console.log("Update user name");
+        updateUsername(userName);
+      }
+    }).catch((e) => {
+      console.log(e);
     });
-    if (!user.isAnonymous) {
-      updateUsername(userName);
-    }
     setEditMode(false);
+    return;
   };
 
   const updateAvatar = () => {
@@ -78,8 +76,7 @@ const ProfileWindow: React.FC<ProfileWindowProps> = ({
         }
       >
         <div>
-          {content}
-          {userProfile && (
+          {(
             <form
               className={styles.profile_content}
               onSubmit={submitUpdateUser}
@@ -155,7 +152,7 @@ const ProfileWindow: React.FC<ProfileWindowProps> = ({
                 delayShow={300}
                 className="tool_tip"
               >
-                {userProfile?.isAnonymous ? "Save Anonymous User" : "Update your profile"}
+                {user?.isAnonymous ? "Save Anonymous User" : "Update your profile"}
               </ReactTooltip>
             </form>
           )}
@@ -185,6 +182,7 @@ const ProfileWindow: React.FC<ProfileWindowProps> = ({
       </div>
     </>
   );
+
 };
 
 export default ProfileWindow;

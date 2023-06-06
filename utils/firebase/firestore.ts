@@ -15,13 +15,13 @@ import {
     doc,
     getDoc,
     deleteDoc,
+    where,
 } from "firebase/firestore";
-import { useCollectionData, useDocumentData } from "react-firebase-hooks/firestore";
+import { useCollectionData, useCollectionDataOnce, useDocumentData, useCollection, useCollectionOnce, useDocumentDataOnce } from "react-firebase-hooks/firestore";
 /* --- Local libs --- */
 import { MessageType, UserProfileType } from "../type";
 import app from "./app"
-import auth from "./auth"
-import { updateUsername } from "./auth"
+import auth, { updateUsername } from "./auth"
 import { getRandomOptions } from "../avatar"
 import { cleanBacWords } from "../textFilter";
 import { User } from "firebase/auth";
@@ -43,9 +43,20 @@ const messagesRef = collection(roomRef, "messages");
 
 // Message
 
-function useGetMessagesCollectionData(lim: number) {
-    const queryMessage = query(messagesRef, orderBy("createdAt", "desc"), limit(lim));
+function getMessagesCollectionData(id: string) {
+    const docRef = doc(messagesRef, id);
+    const docSnap = getDoc(docRef);
+    return docSnap;
+}
+
+function useGetNewMessagesCollectionData() {
+    const queryMessage = query(messagesRef, orderBy("createdAt", "desc"), limit(1));
     return useCollectionData(queryMessage);
+}
+
+function useGetAllMessagesCollectionDataOnce(lim: number) {
+    const queryMessage = query(messagesRef, orderBy("createdAt", "desc"), limit(lim));
+    return useCollectionDataOnce(queryMessage);
 }
 
 async function storeMessageDocument(text: string) {
@@ -64,13 +75,19 @@ async function storeMessageDocument(text: string) {
 
 // User
 
-function useGetUserDocumentData(uid: string) {
+function getUserDocumentData(uid: string) {
     const docRef = doc(userRef, uid);
-    return useDocumentData(docRef);
+    const docSnap = getDoc(docRef);
+    return docSnap;
+    // return useDocumentDataOnce(docRef);
 }
 
 async function saveUserProfileDocument(newProfile: UserProfileType) {
     if (auth.currentUser) {
+        console.log("-- Save USER Profile");
+        console.log("- id: ", auth.currentUser?.uid);
+        console.log("- userName: ", newProfile.userName);
+        console.log("- isAnonymous: ", newProfile.isAnonymous);
         await setDoc(doc(firestore, "users", auth.currentUser?.uid), {
             userAvatar: newProfile.userAvatar,
             userName: newProfile.userName,
@@ -111,11 +128,14 @@ function deletUserProfile(uid: string) {
 
 export default firestore;
 export {
-    useGetMessagesCollectionData,
+    useGetNewMessagesCollectionData,
+    useGetAllMessagesCollectionDataOnce,
+    getMessagesCollectionData,
+
     storeMessageDocument,
 
     userNotExist,
-    useGetUserDocumentData,
+    getUserDocumentData,
     saveUserProfileDocument,
     createNewUserProfile,
     deletUserProfile,

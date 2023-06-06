@@ -11,9 +11,10 @@ const SignOut: React.FC = () => {
   return (
     <button
       className={styles.sign_out}
-      onClick={() => {
-        signOut();
+      onClick={async () => {
+        await signOut();
         Router.push("/");
+        return;
       }}
     >
       <div className={stylesHome.icon}><MdLogout /></div> Log Out

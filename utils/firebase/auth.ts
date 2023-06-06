@@ -31,7 +31,7 @@ import {
 /** 
  * --- Local libs --- 
  * */
-import { deletUserProfile } from "./firestore";
+import { deletUserProfile, userNotExist } from "./firestore";
 import app from "./app"
 
 /** 
@@ -85,16 +85,17 @@ function useSignInAnonymously(auth: Auth) {
 
 /* Sign Out */
 
-function signOut() {
-    if (auth.currentUser?.isAnonymous) {
+async function signOut() {
+    if (auth.currentUser?.isAnonymous && await userNotExist(auth.currentUser.uid)) {
         const uid = auth.currentUser.uid
         deleteUser(auth.currentUser).then(() => {
+            console.log("Delete User: ", uid);
             deletUserProfile(uid);
         }).catch((error) => {
             console.log(error)
         });
     }
-    auth.signOut()
+    await auth.signOut()
 }
 
 /* User Account */
