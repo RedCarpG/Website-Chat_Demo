@@ -39,7 +39,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ messageIds }) => {
     playAudio().catch(console.error);
     setTimeout(() => {
       scrollToBottom();
-    }, 100);
+    }, 200);
   }, [messageIds, audio])
 
   return (

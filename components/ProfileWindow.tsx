@@ -27,42 +27,40 @@ const ProfileWindow: React.FC<ProfileWindowProps> = ({
   hide,
   user,
 }) => {
-
   const [editMode, setEditMode] = useState(false);
   const [userName, setUserName] = useState("Anonymous");
   const [userAvatar, setUserAvatar] = useState<AvatarType>(getRandomOptions());
   useEffect(() => {
-    getUser(user.uid).then((data) => {
-      let profile = data.data();
+    console.log("-- Here");
+    const updateAvatar = async () => {
+      let profile = (await getUser(user.uid)).data();
       if (profile) {
         setUserAvatar(profile?.userAvatar);
         setUserName(profile?.userName);
       }
-    }).catch((e) => {
-      console.log(e);
-    });
-  }, [user])
+    }
+    setTimeout(() => {
+      updateAvatar().catch(console.error);
+    }, 200);
+  }, [user.uid])
 
-  const submitUpdateUser: FormEventHandler<HTMLFormElement> = async (e) => {
+  const submitUpdateUser: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     saveUserProfile({
       userName: userName,
       userAvatar: userAvatar,
       isAnonymous: user.isAnonymous,
     }).then(() => {
-      console.log("Save user");
+      console.log("-- Save user");
       if (!user.isAnonymous) {
         console.log("Update user name");
         updateUsername(userName);
       }
-    }).catch((e) => {
-      console.log(e);
-    });
+    }).catch(console.error);
     setEditMode(false);
-    return;
   };
 
-  const updateAvatar = () => {
+  const shuffleAvatar = () => {
     setUserAvatar(getRandomOptions());
   };
 
@@ -87,7 +85,7 @@ const ProfileWindow: React.FC<ProfileWindowProps> = ({
                   type="button"
                   className={styles.profile_pic_shuffle}
                   onClick={() => {
-                    updateAvatar();
+                    shuffleAvatar();
                   }}
                   data-tip
                   data-for="avatarTip"

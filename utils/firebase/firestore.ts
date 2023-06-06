@@ -15,6 +15,7 @@ import {
     doc,
     getDoc,
     deleteDoc,
+    DocumentSnapshot,
 } from "firebase/firestore";
 import { useCollectionData, useCollectionDataOnce, } from "react-firebase-hooks/firestore";
 /* --- Local libs --- */
@@ -74,9 +75,9 @@ async function storeMessageDocument(text: string) {
 
 // User
 
-function getUserDocumentData(uid: string) {
+async function getUserDocumentData(uid: string) {
     const docRef = doc(userRef, uid);
-    const docSnap = getDoc(docRef);
+    const docSnap = await getDoc(docRef) as DocumentSnapshot<UserProfileType>;
     return docSnap;
 }
 
