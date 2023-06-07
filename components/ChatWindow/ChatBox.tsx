@@ -55,9 +55,6 @@ const ChatProfile: React.FC<ChatProfileProps> = ({ userId, text }) => {
                         </div>
                         <div className={styles.chat_box_content}>{text}</div>
                     </div>
-                    <div className={styles.chat_box_profile}>
-                        <Avatar {...avatar} />
-                    </div>
                 </>
             ) : (
                 <>
