@@ -1,55 +1,55 @@
 import styles from "../styles/Auth.module.scss";
+import stylesHome from "../styles/Home.module.scss";
 import { useState } from "react";
 import { useSignIn, SignInMethod } from "../utils/database";
 import ReactTooltip from "react-tooltip";
 import { FaGoogle, FaGhost } from "react-icons/fa";
+import { MdLogin } from "react-icons/md";
 
 const SignIn: React.FC = () => {
+  // Normal Sign in
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [
     signInWithEmailPassword,
     userEmailPassword,
     loadingEmailPassword,
     errorEmailPassword,
   ] = useSignIn(SignInMethod.EMAIL_PASSWORD);
-
+  // Google Email Sign In
   const [signInWithGoogle, userGoogle, loadingGoogle, errorGoogle] = useSignIn(
     SignInMethod.GOOGLE
   );
-
+  const googleCustomParameters = { login_hint: "user@example.com" };
+  // Anonymous Sign in
   const [signInAnonymousLy, userAnonymous, loadingAnonymous, errorAnonymous] =
     useSignIn("Anonymously");
 
-  const [signInWithGithub, userGithub, loadingGithub, errorGithub] = useSignIn(
-    SignInMethod.GITHUB
-  );
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const customParameters = { login_hint: "user@example.com" };
+  // Loading page
   if (
     loadingGoogle ||
-    loadingGithub ||
     loadingAnonymous ||
     loadingEmailPassword
   ) {
     return <p>Signing in...</p>;
   }
-  if (userGoogle || userGithub || userAnonymous || userEmailPassword) {
+  // Already Signed in 
+  if (userGoogle || userAnonymous || userEmailPassword) {
     return (
       <div>
         <p>
           Signed In User: {userGoogle?.providerId}
-          {userGithub?.providerId}
           {userAnonymous?.providerId}
         </p>
       </div>
     );
   }
-
+  // Sign in form
   return (
     <>
       <div className={styles.sign_in}>
+        <div className={styles.title}> Sign In </div>
         <form
           className={styles.sign_in_email_psw}
           onSubmit={() => {
@@ -74,14 +74,19 @@ const SignIn: React.FC = () => {
               setPassword(e.target.value);
             }}
           />
-          <button type="submit" className={styles.submit}>
-            Log in
+          <button title="submit" type="submit" className={styles.submit}>
+            <div className={stylesHome.icon}><MdLogin /></div>Log in
           </button>
         </form>
+        <div className={stylesHome.line}>
+          <hr />or <hr />
+        </div>
         <div className={styles.sign_in_other_methods}>
           <button
+            type="button"
+            title="googleSignIn"
             onClick={() => {
-              signInWithGoogle(undefined, customParameters);
+              signInWithGoogle(undefined, googleCustomParameters);
             }}
             data-tip
             data-for="googleTip"
@@ -99,13 +104,16 @@ const SignIn: React.FC = () => {
             Sign in with Google Account
           </ReactTooltip>
           <button
+            type="button"
+            title="anonymousSignIn"
+            className={styles.sign_in_anonymous}
             onClick={() => {
               signInAnonymousLy();
             }}
             data-tip
             data-for="anonymousTip"
           >
-            <FaGhost />
+            <div className={stylesHome.icon}><FaGhost /></div>  Anonymous
           </button>
           <ReactTooltip
             id="anonymousTip"
@@ -120,17 +128,15 @@ const SignIn: React.FC = () => {
         </div>
 
         {(errorGoogle ||
-          errorGithub ||
           errorAnonymous ||
           errorEmailPassword) && (
-          <p>
-            {errorGoogle?.message}
-            {errorGithub?.message}
-            {errorAnonymous?.message}
-            {errorEmailPassword?.message}
-          </p>
-        )}
-      </div>
+            <p>
+              {errorGoogle?.message}
+              {errorAnonymous?.message}
+              {errorEmailPassword?.message}
+            </p>
+          )}
+      </div >
     </>
   );
 };

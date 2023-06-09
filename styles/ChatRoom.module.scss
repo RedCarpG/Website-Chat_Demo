@@ -1,9 +1,11 @@
 @import "./color.scss";
 
 $yellow: yellow;
+
 .anonymous {
   color: $yellow;
 }
+
 .deleted_anonymous {
   color: black;
 }
@@ -44,6 +46,7 @@ $yellow: yellow;
     padding: 1em;
     background-color: rgb(59, 59, 59);
     border-radius: 25px;
+
     .chat_content {
       scroll-behavior: smooth;
       overflow-y: auto;
@@ -51,7 +54,7 @@ $yellow: yellow;
       padding-right: 1em;
       display: flex;
       flex-direction: column;
-      gap: 0.8em;
+      gap: 0.1em;
       height: 100%;
     }
 
@@ -60,45 +63,68 @@ $yellow: yellow;
       height: 60px;
       border-radius: 50px;
     }
+
     .chat_box_name {
       font-size: 12px;
       margin-left: 0.5em;
+      margin-bottom: 0.5em;
+      padding-top: 1em;
     }
-    .chat_box_left {
+
+    .chat_box_text {
+      display: flex;
+      flex-direction: column;
       max-width: 80%;
     }
-    .chat_box_content {
+
+    .chat_box_text_content {
       width: fit-content;
-      padding: 0.5em;
+      min-width: 4em;
+      padding: 0.35em;
       padding-left: 0.8em;
       padding-right: 0.8em;
-      margin-top: 0.5em;
+      margin-bottom: 0.3em;
       background-color: rgb(121, 121, 121);
-      border-radius: 20px;
+      border-radius: 12px;
       word-wrap: break-word;
       white-space: normal;
       max-width: 100%;
     }
+
     .chat_box,
     .user_chat_box {
       display: flex;
-      gap: 0.1em;
+      gap: 0.05em;
+    }
+
+    .chat_box {
+
+      .chat_box_text_content:last-child {
+        border-bottom-right-radius: 15px;
+      }
     }
 
     .user_chat_box {
       justify-content: flex-end;
-      & > div {
+
+      .chat_box_text_content:last-child {
+        border-bottom-left-radius: 15px;
+      }
+
+      &>div {
         display: flex;
         flex-direction: column;
         align-items: flex-end;
       }
-      .chat_box_content {
+
+      .chat_box_text_content {
         background-color: rgb(67, 192, 150);
+        text-align: right;
       }
 
       .chat_box_name {
         margin-left: 0;
-        margin-right: 1em;
+        margin-right: 0.5em;
         text-align: right;
       }
     }
@@ -117,6 +143,7 @@ $yellow: yellow;
       width: calc(100% - 6em);
       height: 70%;
     }
+
     .chat_input_send {
       font-size: 1rem;
     }
@@ -140,7 +167,8 @@ $yellow: yellow;
   align-items: center;
   padding: 25px;
   padding-left: 5px;
-  & > div {
+
+  &>div {
     width: 100%;
     height: 100%;
     display: flex;
@@ -154,6 +182,7 @@ $yellow: yellow;
     border-radius: 25px;
     color: black;
   }
+
   .profile_content {
     display: flex;
     justify-content: center;
@@ -162,9 +191,11 @@ $yellow: yellow;
     gap: 0.5em;
     width: 100%;
     color: white;
+
     .profile_pic {
       width: 90%;
       position: relative;
+
       button.profile_pic_shuffle {
         position: absolute;
         padding: 0.5em;
@@ -173,6 +204,7 @@ $yellow: yellow;
         bottom: 5%;
       }
     }
+
     .profile_name {
       background-color: rgb(31, 31, 31);
       border-radius: 25px;
@@ -236,12 +268,14 @@ button.update {
   .chat_window_fullsize {
     width: 100%;
   }
+
   .profile_window_hidden {
     visibility: hidden;
     opacity: 0;
     width: 1%;
     padding-right: 0;
   }
+
   button.back {
     display: none;
   }
@@ -252,6 +286,7 @@ button.update {
     font-size: 1em;
     top: -8%;
   }
+
   .chat_window {
     font-size: 0.7rem;
     width: 100%;
@@ -259,6 +294,7 @@ button.update {
     min-height: 0;
     padding: 15px;
   }
+
   .profile_window {
     position: absolute;
     width: 1%;
@@ -268,11 +304,13 @@ button.update {
   .chat_window_fullsize {
     display: none;
   }
+
   .profile_window_hidden {
     display: block;
     width: 100%;
     padding: 15px;
   }
+
   button.back {
     position: absolute;
     left: 10%;

@@ -1,63 +1,65 @@
 import styles from "../styles/ChatRoom.module.scss";
+import stylesHome from "../styles/Home.module.scss";
 import React, { FormEventHandler, useEffect, useState } from "react";
 import {
   MdOutlineEditNote,
-  MdOutlineSaveAlt,
+  MdDone,
   MdOutlineShuffle,
   MdWest,
+  MdSave,
 } from "react-icons/md";
 
-import { useGetUser, saveUserProfile } from "../utils/database";
-
-import SignOut from "../components/SignOut";
-
-import Avatar from "../components/Avatar";
-import { getRandomOptions, AvatarType } from "../utils/avatar";
-import { User } from "firebase/auth";
+import { User, getUser, saveUserProfile, updateUsername } from "../utils/database";
 import ReactTooltip from "react-tooltip";
+
+import { getRandomOptions, AvatarType } from "../utils/avatar";
+import SignOut from "../components/SignOut";
+import Avatar from "../components/Avatar";
 
 interface ProfileWindowProps {
   hide: boolean;
   user: User;
   toggleProfile: Function;
 }
+
 const ProfileWindow: React.FC<ProfileWindowProps> = ({
   toggleProfile,
   hide,
   user,
 }) => {
-  const [userProfile, loading, error, snapshot] = useGetUser(user.uid);
   const [editMode, setEditMode] = useState(false);
-  const [userName, setUserName] = useState(userProfile?.userName);
-  const [userAvatar, setUserAvatar] = useState<AvatarType>(
-    userProfile?.userAvatar
-  );
-
-  let content = <></>;
-  if (loading) {
-    content = <p>Loading...</p>;
-  } else if (error) {
-    content = <p>Error: {error.message}</p>;
-  } else {
-    content = <></>;
-  }
-
+  const [userName, setUserName] = useState("Anonymous");
+  const [userAvatar, setUserAvatar] = useState<AvatarType>(getRandomOptions());
   useEffect(() => {
-    setUserName(userProfile?.userName);
-    setUserAvatar(userProfile?.userAvatar);
-  }, [userProfile]);
+    const updateAvatar = async () => {
+      let profile = (await getUser(user.uid)).data();
+      if (profile) {
+        setUserAvatar(profile?.userAvatar);
+        setUserName(profile?.userName);
+      }
+    }
+    setTimeout(() => {
+      updateAvatar().catch(console.error);
+    }, 200);
+  }, [user.uid])
 
-  const submitUpdateUser: FormEventHandler<HTMLFormElement> = async (e) => {
+  const submitUpdateUser: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     saveUserProfile({
       userName: userName,
       userAvatar: userAvatar,
       isAnonymous: user.isAnonymous,
-    });
+    }).then(() => {
+      console.log("-- Save user");
+      if (!user.isAnonymous) {
+        console.log("Update user name");
+        updateUsername(userName);
+      }
+    }).catch(console.error);
     setEditMode(false);
   };
 
-  const updateAvatar = () => {
+  const shuffleAvatar = () => {
     setUserAvatar(getRandomOptions());
   };
 
@@ -71,8 +73,7 @@ const ProfileWindow: React.FC<ProfileWindowProps> = ({
         }
       >
         <div>
-          {content}
-          {userProfile && (
+          {(
             <form
               className={styles.profile_content}
               onSubmit={submitUpdateUser}
@@ -83,7 +84,7 @@ const ProfileWindow: React.FC<ProfileWindowProps> = ({
                   type="button"
                   className={styles.profile_pic_shuffle}
                   onClick={() => {
-                    updateAvatar();
+                    shuffleAvatar();
                   }}
                   data-tip
                   data-for="avatarTip"
@@ -115,7 +116,7 @@ const ProfileWindow: React.FC<ProfileWindowProps> = ({
                       setEditMode(false);
                     }}
                   >
-                    <MdOutlineSaveAlt />
+                    <MdDone />
                   </button>
                 </div>
               ) : (
@@ -138,7 +139,7 @@ const ProfileWindow: React.FC<ProfileWindowProps> = ({
                 data-tip
                 data-for="updateTip"
               >
-                Update
+                <div className={stylesHome.icon}><MdSave /></div> Save
               </button>
               <ReactTooltip
                 id="updateTip"
@@ -148,7 +149,7 @@ const ProfileWindow: React.FC<ProfileWindowProps> = ({
                 delayShow={300}
                 className="tool_tip"
               >
-                Comfirm and update your profile
+                {user?.isAnonymous ? "Save Anonymous User" : "Update your profile"}
               </ReactTooltip>
             </form>
           )}
@@ -178,6 +179,7 @@ const ProfileWindow: React.FC<ProfileWindowProps> = ({
       </div>
     </>
   );
+
 };
 
 export default ProfileWindow;

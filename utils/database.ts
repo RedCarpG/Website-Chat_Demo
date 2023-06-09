@@ -2,33 +2,55 @@
  * 
  */
 
-import { 
-    useGetUserDocumentData, 
-    useGetMessagesCollectionData,
-    storeMessageDocument,
-    saveUserProfileDocument,
-} from "./firebase/firestore";
 import {
-    useSignIn,
-    signOut,
-    useCurrentAuthUser,
-    isCurrentUser,
-    SignInMethod,
-    useCreateNewAccount,
-} from "./firebase/auth"
+    useGetNewMessagesCollectionData,
+    useGetAllMessagesCollectionDataOnce,
+    getMessagesCollectionData,
+    storeMessageDocument,
 
-export {
-    useGetUserDocumentData as useGetUser,
-    useGetMessagesCollectionData as useGetMessages,
-    storeMessageDocument as storeMessage,
-    saveUserProfileDocument as saveUserProfile,
-    
+    getUserDocumentData,
+    saveUserProfileDocument,
+    createNewUserProfile,
+    userNotExist,
+} from "./firebase/firestore";
+import auth, {
+    User,
+    SignInMethod,
+    onAuthStateChanged,
+
     useSignIn,
     signOut,
+
+    useRegisterNewAccount,
+
     useCurrentAuthUser,
     isCurrentUser,
+    updateUsername,
+} from "./firebase/auth";
+
+export type {
+    User
+};
+export {
+    auth,
+
+    useSignIn,
+    signOut,
     SignInMethod,
-    
-    useCreateNewAccount,
+    onAuthStateChanged,
+
+    useRegisterNewAccount,
+    updateUsername,
+    useCurrentAuthUser,
+    isCurrentUser,
+
+    getMessagesCollectionData as getMsgDataOnce,
+    useGetNewMessagesCollectionData as useGetNewMsg,
+    useGetAllMessagesCollectionDataOnce as useGetAllMsgOnce,
+    storeMessageDocument as storeMessage,
+    createNewUserProfile,
+    getUserDocumentData as getUser,
+    saveUserProfileDocument as saveUserProfile,
+    userNotExist,
 }
 

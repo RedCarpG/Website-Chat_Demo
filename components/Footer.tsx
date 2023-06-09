@@ -14,6 +14,7 @@ const Footer: React.FC = () => {
             rel="noreferrer"
             data-tip
             data-for="myGithubTip"
+            title="gitHubLink"
           >
             <FaGithub />
           </a>
@@ -33,6 +34,7 @@ const Footer: React.FC = () => {
             rel="noreferrer"
             data-tip
             data-for="myLinkedInTip"
+            title="linkedInLink"
           >
             <FaLinkedin />
           </a>
