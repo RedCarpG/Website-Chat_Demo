@@ -13,33 +13,42 @@ import Avatar from "../Avatar";
 import { getRandomOptions } from "../../utils/avatar";
 import { DocumentData } from "firebase/firestore";
 
-interface ChatProfileProps {
-    userId: string;
-    text: string;
+interface ChatBoxProps {
+    messagesData: DocumentData[];
 }
-const ChatProfile: React.FC<ChatProfileProps> = ({ userId, text }) => {
+const ChatBox: React.FC<ChatBoxProps> = ({ messagesData }) => {
+
     const [userName, setUserName] = useState(
         <span className={styles.deleted_anonymous}>{`Deleted User`}</span>
     );
     const [avatar, setAvatar] = useState(getRandomOptions());
     const [isUser, setIsUsr] = useState(false);
+    const [userId, setUserId] = useState<string | undefined>(undefined);
 
     useEffect(() => {
-        getUser(userId).then((data) => {
-            setIsUsr(isCurrentUser(userId));
-            let profile = data.data();
-            if (profile) {
-                setAvatar(profile?.userAvatar);
-                setUserName(
-                    <span className={profile?.isAnonymous ? styles.anonymous : ""}>
-                        {profile?.userName}
-                    </span>
-                );
-            }
+        if (messagesData[0]) {
+            setUserId(messagesData[0].uid);
+        }
+    }, [messagesData])
 
-        }).catch((e) => {
-            console.log(e);
-        });
+    useEffect(() => {
+        if (userId) {
+            getUser(userId).then((data) => {
+                setIsUsr(isCurrentUser(userId));
+                let profile = data.data();
+                if (profile) {
+                    setAvatar(profile?.userAvatar);
+                    setUserName(
+                        <span className={profile?.isAnonymous ? styles.anonymous : ""}>
+                            {profile?.userName}
+                        </span>
+                    );
+                }
+
+            }).catch((e) => {
+                console.log(e);
+            });
+        }
     }, [userId])
 
     return <>
@@ -49,11 +58,13 @@ const ChatProfile: React.FC<ChatProfileProps> = ({ userId, text }) => {
         >
             {isUser ? (
                 <>
-                    <div className={styles.chat_box_left}>
+                    <div className={styles.chat_box_text}>
                         <div className={`${styles.name} ${styles.chat_box_name}`}>
                             {userName}
                         </div>
-                        <div className={styles.chat_box_content}>{text}</div>
+                        {messagesData.map((e, index) => {
+                            return <div key={index} className={styles.chat_box_text_content}>{e.text}</div>
+                        })}
                     </div>
                 </>
             ) : (
@@ -61,44 +72,19 @@ const ChatProfile: React.FC<ChatProfileProps> = ({ userId, text }) => {
                     <div className={styles.chat_box_profile}>
                         <Avatar {...avatar} />
                     </div>
-                    <div className={styles.chat_box_left}>
+                    <div className={styles.chat_box_text}>
                         <div className={styles.chat_box_name}>
                             {userName}
                         </div>
-                        <div className={styles.chat_box_content}>{text}</div>
+                        {messagesData.map((e, index) => {
+                            return <div key={index} className={styles.chat_box_text_content}>{e.text}</div>
+                        })}
                     </div>
                 </>
             )}
         </div>
         }
     </>
-}
-
-
-interface ChatBoxProps {
-    messageId: string;
-}
-const ChatBox: React.FC<ChatBoxProps> = ({ messageId }) => {
-    const [msg, setMsg] = useState<DocumentData | undefined>(undefined);
-
-    useEffect(() => {
-        getMsgDataOnce(messageId).then((x) => {
-            setMsg(x.data());
-        }).catch((e) => {
-            console.log(e);
-        });
-    }, [messageId])
-
-    if (msg) {
-        return (
-            <>
-                <ChatProfile
-                    userId={msg.uid} text={msg.text}
-                />
-            </>
-        );
-    }
-    return <></>;
 };
 
 export default ChatBox;

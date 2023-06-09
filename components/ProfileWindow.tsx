@@ -31,7 +31,6 @@ const ProfileWindow: React.FC<ProfileWindowProps> = ({
   const [userName, setUserName] = useState("Anonymous");
   const [userAvatar, setUserAvatar] = useState<AvatarType>(getRandomOptions());
   useEffect(() => {
-    console.log("-- Here");
     const updateAvatar = async () => {
       let profile = (await getUser(user.uid)).data();
       if (profile) {
